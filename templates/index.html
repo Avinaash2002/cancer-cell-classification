@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Cell Image Classification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        background-color: #ffe4e1;
+        color: #333;
+    }
+
+    .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+        padding: 0 20px;
+    }
+
+    nav {
+        background: #ffb6c1;
+        color: #000;
+        padding: 10px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    nav h1 {
+        float: left;
+        margin: 0;
+        padding: 0 20px;
+        font-size: 24px;
+    }
+
+    nav ul {
+        padding: 0;
+        list-style: none;
+        float: right;
+        margin: 0;
+    }
+
+    nav ul li {
+        display: inline;
+        padding: 0 20px;
+    }
+
+    nav ul li a {
+        color: #000;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    nav ul li a:hover {
+        text-decoration: underline;
+    }
+
+    section {
+        padding: 40px 0;
+        margin: 20px 0;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    section#home {
+        position: relative;
+        text-align: center;
+        padding: 100px 0;
+        background: url("{{ url_for('static', filename='images/1_q82_KOb2MdgUub9pIm9dew.jpg') }}") no-repeat center center/cover;
+        color: #fff;
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    section#home::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    section#home h2,
+    section#home p {
+        position: relative;
+        z-index: 1;
+        color: #fff;
+    }
+
+    section#home h2 {
+        margin: 0;
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    section#home p {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .intro::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 0;
+    }
+
+    .intro h2, .intro p {
+        position: relative;
+        z-index: 1;
+    }
+
+    section h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 36px;
+        font-weight: bold;
+    }
+
+    section p {
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .about-project-image {
+        width: 60%; 
+        height: auto; 
+        display: block;
+        margin: 20px auto;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-image {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .upload-button {
+        background-color: #000; 
+        color: #000; 
+        border: none; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        font-size: 16px; 
+    }
+    
+    .upload-button:hover {
+        background-color: #333; 
+    }
+
+    form label {
+        display: block;
+        margin: 10px 0 5px;
+        color: #333;
+        font-size: 18px;
+    }
+
+    form input, form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    form input[type="submit"] {
+        background: #ffb6c1;
+        color: #000;
+        font-weight: bold
+        border: none;
+        cursor: pointer;
+    }
+
+    form input[type="submit"]:hover {
+        background: #ff7f9b;
+    }
+
+    footer {
+        background: #ffb6c1;
+        color: #fff;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    footer p {
+        margin: 0;
+    }
+
+    footer a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+    .social-icons {
+        margin-top: 10px;
+    }
+
+    .social-icons a {
+        margin: 0 10px;
+        color: #fff;
+        font-size: 20px;
+    }
+</style>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="container">
+            <h1>Cancer Cell Image Classification</h1>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#project">Project</a></li>
+                <li><a href="#upload">Upload</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="container">
+            <h2>Welcome to Our Project</h2>
+            <p>Leveraging AI for Accurate Diagnosis</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>About Our Project</h2>
+            <p>Our project focuses on developing an AI model to classify cancer cell images accurately. We use state-of-the-art machine learning algorithms and a robust dataset to train our model. Our mission is to enhance diagnostic tools to aid healthcare professionals.</p>
+            <img src="{{ url_for('static', filename='images/image2.jpg') }}" alt="About Project" class="about-project-image">
+        </div>
+    </section>
+
+    <!-- Project Section -->
+    <section id="project">
+        <div class="container">
+            <h2>Project Details</h2>
+            <img src="{{ url_for('static', filename='images/methodology.jpg') }}" alt="Methodology" class="project-image">
+            <p>We employ convolutional neural networks (CNNs) for image classification. Our process involves data collection, preprocessing, model training, and evaluation.</p>
+            <h3>Results</h3>
+            <img src="{{ url_for('static', filename='images/results.jpg') }}" alt="Results" class="project-image">
+            <p>Our model achieved a 50% - 68% accuracy rate in classifying cancer cell images in the three chategories which are Melenoma, Nevus and seborrheic keratosis.</p>
+            <h3>Conclusions</h3>
+            <p>The results of our project indicate a better future for AI-assisted diagnostics. We aim to continue improving our model and explore on how to improvise accuracy in developing the model to achieve better outcomes.</p>
+    </section>
+
+    <!-- Upload Section -->
+    <section id="upload">
+        <div class="container">
+            <h2>Upload an Image for Cancer Detection</h2>
+            <img src="{{ url_for('static', filename='images/uploads.jpg') }}" alt="Upload Image" class="project-image">
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*">
+                <input type="submit" value="Upload Image" class="upload-button">
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <p>Email: your-email@example.com</p>
+            <p>Phone: (123) 456-7890</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Cancer Cell Image Classification Project</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
